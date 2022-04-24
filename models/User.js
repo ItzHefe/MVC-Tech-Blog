@@ -14,45 +14,54 @@ User.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
+      autoIncrement: true
     },
-    name: {
+    username: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
+    },
+    twitter: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    github: {
+        type: DataTypes.STRING,
+        allowNull: true
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
       validate: {
-        isEmail: true,
-      },
+        isEmail: true
+      }
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [8],
-      },
-    },
+        len: [4]
+      }
+    }
   },
-  {
-    hooks: {
-      beforeCreate: async (newUserData) => {
+{
+  hooks: {
+    async beforeCreate(newUserData) {
         newUserData.password = await bcrypt.hash(newUserData.password, 10);
         return newUserData;
-      },
-      beforeUpdate: async (updatedUserData) => {
+    },
+    async beforeUpdate(updatedUserData) {
         updatedUserData.password = await bcrypt.hash(updatedUserData.password, 10);
         return updatedUserData;
-      },
-    },
-    sequelize,
-    timestamps: false,
-    freezeTableName: true,
-    underscored: true,
-    modelName: 'user',
-  }
+    }
+  },
+
+sequelize,
+timestamps: false,
+freezeTableName: true,
+underscored: true,
+modelName: 'user'
+}
 );
 
 module.exports = User;
